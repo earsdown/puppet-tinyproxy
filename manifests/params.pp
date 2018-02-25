@@ -55,10 +55,17 @@ class tinyproxy::params {
       $port = 8888
     }
     'Debian':{
-      $configfile = '/etc/tinyproxy.conf'
-      $user = 'nobody'
-      $group = 'nogroup'
-      $port = 3128
+      if versioncmp($::lsbmajdistrelease, '9') >= 0 {
+        $configfile = '/etc/tinyproxy/tinyproxy.conf'
+        $user = 'tinyproxy'
+        $group = 'tinyproxy'
+        $port = 8888
+      } else {
+        $configfile = '/etc/tinyproxy.conf'
+        $user = 'nobody'
+        $group = 'nogroup'
+        $port = 3128
+      }
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily}, lsbdistcodename: ${::lsbdistcodename}")
